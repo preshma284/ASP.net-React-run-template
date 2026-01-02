@@ -168,11 +168,36 @@ Update the CORS policy in `Backend/Program.cs` if your frontend runs on a differ
 
 ## Security Notes
 
-- Passwords are hashed using BCrypt before storage
-- JWT tokens are used for authentication
-- Tokens are stored in browser localStorage
+### Authentication & Passwords
+- Passwords are hashed using BCrypt before storage (never stored in plain text)
+- JWT tokens are used for authentication with configurable expiration
 - The database includes unique constraint on email addresses
-- **Remember to change the JWT secret key in production!**
+
+### JWT Secret Key Configuration
+⚠️ **CRITICAL**: The JWT secret key in `appsettings.json` is for development only!
+
+**For Production:**
+1. Generate a secure random key (minimum 32 characters)
+2. Set it via environment variable:
+   ```bash
+   export Jwt__Key="your-secure-random-key-here"
+   ```
+3. Or update `appsettings.json` (but never commit production secrets to git)
+4. The application will throw an error if no JWT key is configured
+
+### Token Storage
+⚠️ **Security Consideration**: Tokens are currently stored in browser localStorage for simplicity. This is vulnerable to XSS attacks.
+
+**For Production**, consider:
+- Using httpOnly cookies for token storage
+- Implementing refresh tokens
+- Adding CSRF protection
+- Using a secure token storage library
+
+### HTTPS
+- Always use HTTPS in production
+- Update CORS origins to match your production domains
+
 
 ## Technologies Used
 

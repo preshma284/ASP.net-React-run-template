@@ -14,7 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configure JWT Authentication
-var jwtKey = builder.Configuration["Jwt:Key"] ?? "your-secret-key-min-32-chars-long-for-security";
+var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key must be configured in appsettings.json or environment variables");
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "Backend";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "Frontend";
 

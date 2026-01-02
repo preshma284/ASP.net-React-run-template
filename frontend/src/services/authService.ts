@@ -25,6 +25,8 @@ const api = axios.create({
 });
 
 export const authService = {
+  // Security Note: Using localStorage for token storage is simple but vulnerable to XSS attacks.
+  // For production, consider using httpOnly cookies or a more secure storage mechanism.
   signup: async (data: SignupRequest): Promise<AuthResponse> => {
     const response = await api.post<AuthResponse>('/auth/signup', data);
     if (response.data.token) {
